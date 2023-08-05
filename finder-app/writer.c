@@ -1,16 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 
 int main(int argc, char* argv[])
 {
 
     if( argc != 3 )
     {
-      printf("expected 2 arguments!\n");
-      printf("(1) writefile which is the path to the file\n");
-      printf("(2) writestr which is the content that is being written to the file\n");
-    //   printf("The argument supplied is %s\n", argv[1]);
-      printf("exiting here\n");
+      syslog(LOG_ERR, "expected 2 arguments! - (1) writefile which is the path to the file & (2) writestr which is the content that is being written to the file ...exiting!\n");
       exit(1);
     }
     // printf("The (1) argument supplied is %s\n", argv[1]);
@@ -26,14 +23,16 @@ int main(int argc, char* argv[])
     FILE *fptr;
 
     // use appropriate location if you are using MacOS or Linux
-    fptr = fopen(writefile,"w");
+    fptr = fopen(writefile, "w");
 
     if(fptr == NULL)
     {
-        printf("Error!");   
-        exit(1);             
+        syslog(LOG_ERR, "failed to create writefile: %s ...exiting!\n", writefile);
+        exit(1);
     }
 
+
+    syslog(LOG_DEBUG, "Writing %s to %s", writestr, writefile);
     fprintf(fptr,"%s", writestr);
     fclose(fptr);
 
