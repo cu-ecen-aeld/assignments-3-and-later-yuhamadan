@@ -1,4 +1,11 @@
 #include "systemcalls.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include<sys/wait.h>
+#include <fcntl.h>
+
 
 /**
  * @param cmd the command to execute with system()
@@ -16,6 +23,11 @@ bool do_system(const char *cmd)
  *   and return a boolean true if the system() call completed with success
  *   or false() if it returned a failure
 */
+
+    const int retval = system(cmd);
+    if(retval != 0){
+        return false;
+    }
 
     return true;
 }
@@ -58,8 +70,23 @@ bool do_exec(int count, ...)
  *   as second argument to the execv() command.
  *
 */
+    char* cmd = command[0];
+
+    int size = sizeof(command) / sizeof(command[0]);
+    for(int b = 0; b < size-1 ; b++)
+    {
+        command[b] = command[b + 1];
+    }
+
+    fork();
+    int retval = execv(cmd, command);
+    wait(NULL);
 
     va_end(args);
+
+    if(retval != 0){
+        return false;
+    }
 
     return true;
 }
@@ -87,13 +114,41 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
 
 /*
  * TODO
- *   Call execv, but first using https://stackoverflow.com/a/13784315/1446624 as a refernce,
+ *   Call execv, but first using https://stackoverflow.com/a/13784315/1446624 as a reference,
  *   redirect standard out to a file specified by outputfile.
  *   The rest of the behaviour is same as do_exec()
  *
 */
 
+    char* cmd = command[0];
+
+    int size = sizeof(command) / sizeof(command[0]);
+    for(int b = 0; b < size-1 ; b++)
+    {
+        command[b] = command[b + 1];
+    }
+
+    int retval = -101;
+
+    int kidpid;
+    int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+    if (fd < 0) { perror("open"); abort(); }
+    switch (kidpid = fork()) {
+    case -1: perror("fork"); abort();
+    case 0:
+        if (dup2(fd, 1) < 0) { perror("dup2"); abort(); }
+        close(fd);
+        retval = execv(cmd, command); perror("execv"); abort();
+        wait(NULL);
+    default:
+        close(fd);
+    }
+
     va_end(args);
+
+    if(retval != 0){
+        return false;
+    }
 
     return true;
 }
