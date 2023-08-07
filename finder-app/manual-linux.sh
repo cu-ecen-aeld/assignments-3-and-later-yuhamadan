@@ -60,8 +60,8 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     ## Build a kernel image for booting with QEMU
     make -j4 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
 
-    ## Build any kernel modules
-    make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
+    ## Build any kernel modules - this step is being skipped in this assignment
+    # make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
 
     ## Build the devicetree
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs
@@ -112,14 +112,17 @@ make CONFIG_PREFIX=$ROOT_FS_DIR ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} inst
 echo "Library dependencies"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "Shared library"
+# ldconfig -p | grep libc.so.6
 
+ROOT_FS_DIR=/tmp/aeld/rootfs
 
 cd "$ROOT_FS_DIR"
 
 # TODO: Add library dependencies to rootfs
 echo "TODO: Add library dependencies to rootfs"
-cp /lib/ld-linux-aarch64.so.1 lib/
-cp /lib64/libm.so.6 /lib64/libresolv.so.2 /lib64/libc.so.6 lib64/
+LIB_86_64_DIR=/lib/x86_64-linux-gnu
+# cp $LIB_86_64_DIR/ld-linux-aarch64.so.1 lib/
+cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 lib64/
 
 # TODO: Make device nodes
 echo "TODO: Make device nodes"
