@@ -16,7 +16,6 @@ int main(int argc, char* argv[])
     char* writefile = argv[1];
     char* writestr = argv[2];
 
-
     // printf("writefile: %s\n", writefile);
     // printf("writestr: %s\n", writestr);
     
