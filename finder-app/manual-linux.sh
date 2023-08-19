@@ -124,8 +124,6 @@ ${CROSS_COMPILE}readelf -a busybox | grep "Shared library"
 # sudo find / - name ld-linux-aarch64.so.1
 # /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1
 
-ROOT_FS_DIR=/tmp/aeld/rootfs
-
 cd "$ROOT_FS_DIR"
 
 # TODO: Add library dependencies to rootfs
