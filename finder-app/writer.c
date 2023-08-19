@@ -32,7 +32,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-
     syslog(LOG_DEBUG, "Writing %s to %s", writestr, writefile);
     fprintf(fptr,"%s", writestr);
     fclose(fptr);
