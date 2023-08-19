@@ -40,10 +40,9 @@ LIB_86_64_DIR=/lib/x86_64-linux-gnu
 cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 /tmp/lib64/
 
 mkdir -p /tmp/home/
-cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
-cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 lib/
-
-
+mkdir -p /tmp/lib/
+cp -r /home/mansul/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
+cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /tmp/lib/
 
 
 ## for fixing issues
@@ -142,10 +141,6 @@ cd "$ROOT_FS_DIR"
 echo "TODO: Add library dependencies to rootfs"
 LIB_86_64_DIR=/lib/x86_64-linux-gnu
 
-cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 lib/
-cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* ${ROOT_FS_DIR}/home/
-cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 lib64/
-
 # TODO: Make device nodes
 echo "TODO: Make device nodes"
 sudo mknod -m 666 dev/null c 1 3
@@ -155,7 +150,7 @@ sudo mknod -m 600 dev/console c 5 1
 echo "TODO: Copy the finder related scripts and executables to the /home directory"
 # on the target rootfs
 mkdir -p $ROOT_FS_DIR/home
-cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* ${ROOT_FS_DIR}/home/
+cp -r /home/mansul/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* ${ROOT_FS_DIR}/home/
 
 # TODO: Clean and build the writer utility
 echo "TODO: Clean and build the writer utility"
