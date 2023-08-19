@@ -110,9 +110,19 @@ make CONFIG_PREFIX=$ROOT_FS_DIR ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} inst
 
 
 echo "Library dependencies"
-${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
-${CROSS_COMPILE}readelf -a bin/busybox | grep "Shared library"
+${CROSS_COMPILE}readelf -a busybox | grep "program interpreter"
+    #   [Requesting program interpreter: /lib/ld-linux-aarch64.so.1]
+${CROSS_COMPILE}readelf -a busybox | grep "Shared library"
+#  0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]
+#  0x0000000000000001 (NEEDED)             Shared library: [libresolv.so.2]
+#  0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+
+# ldconfig -p | grep libm.so.6
+# ldconfig -p | grep libresolv.so.2
 # ldconfig -p | grep libc.so.6
+
+# sudo find / - name ld-linux-aarch64.so.1
+# /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1
 
 ROOT_FS_DIR=/tmp/aeld/rootfs
 
@@ -121,7 +131,8 @@ cd "$ROOT_FS_DIR"
 # TODO: Add library dependencies to rootfs
 echo "TODO: Add library dependencies to rootfs"
 LIB_86_64_DIR=/lib/x86_64-linux-gnu
-# cp $LIB_86_64_DIR/ld-linux-aarch64.so.1 lib/
+
+cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 lib/
 cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 lib64/
 
 # TODO: Make device nodes
@@ -129,15 +140,16 @@ echo "TODO: Make device nodes"
 sudo mknod -m 666 dev/null c 1 3
 sudo mknod -m 600 dev/console c 5 1
 
-# TODO: Clean and build the writer utility
-echo "TODO: Clean and build the writer utility"
-make clean
-make CROSS_COMPILE=aarch64-none-linux-gnu-
-
 # TODO: Copy the finder related scripts and executables to the /home directory
 echo "TODO: Copy the finder related scripts and executables to the /home directory"
 # on the target rootfs
-cp -r ../finder-app/* ${ROOT_FS_DIR}/home/
+cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* ${ROOT_FS_DIR}/home/
+
+# TODO: Clean and build the writer utility
+echo "TODO: Clean and build the writer utility"
+cd $ROOT_FS_DIR/home
+make clean
+make CROSS_COMPILE=aarch64-none-linux-gnu-
 
 # TODO: Chown the root directory
 echo "TODO: Chown the root directory"
@@ -148,4 +160,5 @@ sudo chown -R root:root *
 echo "TODO: Create initramfs.cpio.gz"
 cd "$ROOT_FS_DIR"
 find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
+cd ${OUTDIR}
 gzip -f initramfs.cpio
