@@ -34,6 +34,18 @@ if [ ! -d ${OUTDIR} ] ; then
     exit 1
 fi
 
+
+mkdir -p /tmp/lib64/
+LIB_86_64_DIR=/lib/x86_64-linux-gnu
+cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 /tmp/lib64/
+
+mkdir -p /tmp/home/
+cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
+cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 lib/
+
+
+
+
 ## for fixing issues
 # sudo apt install -y libssl-dev
 
@@ -131,6 +143,7 @@ echo "TODO: Add library dependencies to rootfs"
 LIB_86_64_DIR=/lib/x86_64-linux-gnu
 
 cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 lib/
+cp -r $HOME/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* ${ROOT_FS_DIR}/home/
 cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 lib64/
 
 # TODO: Make device nodes
