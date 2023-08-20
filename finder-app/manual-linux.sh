@@ -35,18 +35,28 @@ if [ ! -d ${OUTDIR} ] ; then
 fi
 
 
-find /__w/assignments-3-and-later-yuhamadan/ -name finder-app/
-find /usr/local/arm-cross-compiler/ -name ld-linux-aarch64.so.1
-find / -name libm.so.6
-
 mkdir -p /tmp/lib64/
-LIB_86_64_DIR=/lib/x86_64-linux-gnu
-cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 /tmp/lib64/
-
 mkdir -p /tmp/home/
 mkdir -p /tmp/lib/
-cp -r /home/mansul/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
-cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /tmp/lib/
+
+ARM_CC_LOCATION=/usr/local/arm-cross-compiler/
+finder_app_location=$(find /__w/assignments-3-and-later-yuhamadan/ -name finder-app/ -print -quit)
+somelib_location=$(find $ARM_CC_LOCATION -name ld-linux-aarch64.so.1 -print -quit)
+
+cp $somelib_location /tmp/lib/
+
+# LIB_86_64_DIR=/lib/x86_64-linux-gnu
+LIB_86_64_DIR=$(find $ARM_CC_LOCATION -name libm.so.6 -print -quit)
+LIB_86_64_DIR=$(dirname "$LIB_86_64_DIR")
+cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 /tmp/lib64/
+
+cp -r $finder_app_location/* /tmp/home/
+
+echo "it worked!"
+exit 0
+
+# cp -r /home/mansul/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
+# cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /tmp/lib/
 
 
 ## for fixing issues
