@@ -35,8 +35,8 @@ if [ ! -d ${OUTDIR} ] ; then
 fi
 
 
-find / -name ld-linux-aarch64.so.1
 find / -name finder-app
+find /usr/local/arm-cross-compiler/ -name ld-linux-aarch64.so.1
 
 mkdir -p /tmp/lib64/
 LIB_86_64_DIR=/lib/x86_64-linux-gnu
