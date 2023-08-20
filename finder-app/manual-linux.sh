@@ -35,6 +35,11 @@ if [ ! -d ${OUTDIR} ] ; then
 fi
 
 
+ROOT_FS_DIR=/tmp/rootfs
+mkdir -p $ROOT_FS_DIR/home
+finder_app_location=$(find /__w/assignments-3-and-later-yuhamadan/ -name finder-app -print -quit)
+cp -r $finder_app_location/* ${ROOT_FS_DIR}/home/
+
 # for fixing issues
 sudo apt install -y libssl-dev
 
@@ -149,7 +154,7 @@ sudo mknod -m 600 dev/console c 5 1
 echo "TODO: Copy the finder related scripts and executables to the /home directory"
 # on the target rootfs
 mkdir -p $ROOT_FS_DIR/home
-finder_app_location=$(find /__w/assignments-3-and-later-yuhamadan/ -name finder-app/ -print -quit)
+finder_app_location=$(find /__w/assignments-3-and-later-yuhamadan/ -name finder-app -print -quit)
 cp -r $finder_app_location/* ${ROOT_FS_DIR}/home/
 
 # TODO: Clean and build the writer utility
