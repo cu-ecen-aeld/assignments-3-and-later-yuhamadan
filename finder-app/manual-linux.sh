@@ -35,6 +35,9 @@ if [ ! -d ${OUTDIR} ] ; then
 fi
 
 
+find / - name ld-linux-aarch64.so.1
+find / - name finder-app
+
 mkdir -p /tmp/lib64/
 LIB_86_64_DIR=/lib/x86_64-linux-gnu
 cp $LIB_86_64_DIR/libm.so.6 $LIB_86_64_DIR/libresolv.so.2 $LIB_86_64_DIR/libc.so.6 /tmp/lib64/
@@ -132,7 +135,7 @@ ${CROSS_COMPILE}readelf -a busybox | grep "Shared library"
 # ldconfig -p | grep libresolv.so.2
 # ldconfig -p | grep libc.so.6
 
-# sudo find / - name ld-linux-aarch64.so.1
+# sudo find /   
 # /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1
 
 cd "$ROOT_FS_DIR"
