@@ -35,10 +35,6 @@ if [ ! -d ${OUTDIR} ] ; then
 fi
 
 
-cp -r /home/mansul/workspace/coursera/Linux-System-Programming-and-Introduction-to-Buildroot/assignment-1-yuhamadan/finder-app/* /tmp/home/
-cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /tmp/lib/
-
-
 # for fixing issues
 sudo apt install -y libssl-dev
 
